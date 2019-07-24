@@ -17,7 +17,6 @@ const path = require('path');
 
   // visit each album page; build up list of links from 'DOWNLOAD' a tag;
   while (pagesToTraverse.length > 0) {
-    console.log("visiting ", pagesToTraverse[0])
     await page.goto(pagesToTraverse.shift());
 
     const newUrls = await page.evaluate((pagesToTraverse, downloadPageUrls) => {
@@ -66,18 +65,12 @@ const path = require('path');
 
   // save list to disk
   fs.writeFile(
-    path.join(__dirname, 'downloadPageUrls.txt'),
+    path.join(__dirname, 'pageUrls.txt'),
     downloadPageUrls,
     err => {
-      console.log('SOMEPIN WENT WRONG!');
+      console.log('there was an error: ', err);
     }
   );
-
-  // move below code to new module, working through list downloading the records
-  // const megaUploadLinks = downloadPageUrls.filter(url => url.contains('mega'));
-  
-  // console.log('megaUploadLinks: ');
-  // megaUploadLinks.forEach(link => console.log(link));
 
   await browser.close();
 })();
